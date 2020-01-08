@@ -1,0 +1,38 @@
+{
+  "name": "taskforceapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel server/server.js --out-dir build",
+    "dev-start": "babel-watch server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kimenyikevin/TaskForceAPI.git"
+  },
+  "author": "kevin kimenyi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kimenyikevin/TaskForceAPI/issues"
+  },
+  "homepage": "https://github.com/kimenyikevin/TaskForceAPI#readme",
+  "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "idempotent-babel-polyfill": "^7.4.4",
+    "jsonwebtoken": "^8.5.1",
+    "nodemailer": "^6.4.2",
+    "pg": "^7.17.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-watch": "^7.0.0"
+  }
+}
