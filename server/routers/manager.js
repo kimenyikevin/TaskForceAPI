@@ -3,5 +3,6 @@ import employee from '../controller/manager'
 
 const router = express.Router();
 router.post('/employees', employee.create);
+router.post('/employees/:id', employee.delete);
 
 export default router;
