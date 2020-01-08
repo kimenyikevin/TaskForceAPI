@@ -55,6 +55,27 @@ class employee{
           });
         }
       }
+      async delete(req, res) {
+        const deleteQuery = 'DELETE FROM employees WHERE id=$1 returning *';
+        try {
+          const { rows } = await db.execute(deleteQuery, [req.params.id]);
+          if(!rows[0]) {
+            return res.status(404).send({
+              status: 404,
+              error: 'employee not found'
+          });
+          }
+          return res.status(200).send({ 
+            status: 200,
+            message: 'employee has been deleted'
+           });
+        } catch(error) {
+          return res.status(400).send({
+            status: 400,
+            error: `error has occurred ${error}`
+        });
+        }
+      }
 }
 
 export default new employee();
