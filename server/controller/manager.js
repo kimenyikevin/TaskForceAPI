@@ -76,6 +76,36 @@ class employee{
         });
         }
       }
+      async update(req, res) {
+        const findOneQuery = 'SELECT * FROM employees WHERE id=$1';
+        const updateOneQuery =`UPDATE employees
+          SET employee_name=$1, national_id=$2, phone_number=$3, email=$4, date_of_birth=$5, position=$6
+          WHERE id=$7 returning *`;
+        try {
+          const { rows } = await db.execute(findOneQuery, [req.params.id]);
+          const data = rows[0];
+          if(!rows[0]) {
+            return res.status(404).send({'message': 'reflection not found'});
+          }
+          const values = [
+            req.body.employee_name || data.employee_name,
+            req.body.national_id || data.national_id,
+            req.body.phone_number || data.phone_number,
+            req.body.email || data.email,
+            req.body.date_of_birth || data.date_of_birth,
+            req.body.position || data.position,
+            req.params.id
+          ];
+          const response = await db.execute(updateOneQuery, values);
+          return res.status(200).send({
+            status: 200,
+            message: 'employee updaed succcessfully',
+            data: response.rows
+          });
+        } catch(err) {
+          return res.status(400).send(err);
+        }
+      }
 }
 
 export default new employee();
