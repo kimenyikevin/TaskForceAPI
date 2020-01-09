@@ -5,5 +5,6 @@ const router = express.Router();
 router.post('/employees', employee.create);
 router.post('/employees/:id', employee.delete);
 router.put('/employees/:id', employee.update);
+router.put('/employees/:id/active', employee.active);
 
 export default router;
