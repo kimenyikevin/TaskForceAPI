@@ -106,6 +106,42 @@ class employee{
           return res.status(400).send(err);
         }
       }
+      active = async (req, res) => {
+        const findOne = 'SELECT * FROM employees WHERE id=$1';
+        const updateOne =`UPDATE employees
+          SET status=$1
+          WHERE id=$2 returning *`;
+        try {
+          if(isNaN(req.params.id)){
+            return res.status(400).send({
+              status: 400,
+              error: 'id must be a number',
+            });
+          }
+          const { rows } = await db.execute(findOne, [req.params.id]);
+          if(rows[0].status == 'active') {
+            return res.status(409).send({
+              status: 409,
+              error: 'this employee is active',
+            });
+          }
+          const values = [
+            'active',
+            req.params.id, 
+          ];
+      const response = await db.execute(updateOne, values);
+      return res.status(200).send({
+        status: 200,
+        message: 'employee has been actived successfully',
+        data: response.rows
+   });
+        } catch(err) {
+          return res.status(400).send({
+            status: 400,
+            error: `error has occurred ${error}`
+        });
+        }
+      }
 }
 
 export default new employee();
