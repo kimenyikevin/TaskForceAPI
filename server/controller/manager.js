@@ -1,5 +1,6 @@
 import 'idempotent-babel-polyfill';
 import db from '../db/manager';
+import service from '../service/manager';
 import nodemailer from 'nodemailer';
 class employee{
     async create(req, res) {
@@ -107,10 +108,6 @@ class employee{
         }
       }
       active = async (req, res) => {
-        const findOne = 'SELECT * FROM employees WHERE id=$1';
-        const updateOne =`UPDATE employees
-          SET status=$1
-          WHERE id=$2 returning *`;
         try {
           if(isNaN(req.params.id)){
             return res.status(400).send({
@@ -118,22 +115,66 @@ class employee{
               error: 'id must be a number',
             });
           }
-          const { rows } = await db.execute(findOne, [req.params.id]);
-          if(rows[0].status == 'active') {
+          const values = [
+            'active',
+            req.params.id, 
+          ];
+          const response  = await service.findEmployee(req.params.id)
+          if(!response){
+            return res.status(404).send({
+              status: 404,
+              error: 'this employee does not exist',
+            });
+          }
+          if(response.status == 'active' ) {
             return res.status(409).send({
               status: 409,
               error: 'this employee is active',
             });
           }
-          const values = [
-            'active',
-            req.params.id, 
-          ];
-      const response = await db.execute(updateOne, values);
+          const updated = await service.updateEmployee(values);
       return res.status(200).send({
         status: 200,
         message: 'employee has been actived successfully',
-        data: response.rows
+        data: updated
+   });
+        } catch(err) {
+          return res.status(400).send({
+            status: 400,
+            error: `error has occurred ${err}`
+        });
+        }
+      }
+      suspend = async (req, res) => {
+        try {
+          if(isNaN(req.params.id)){
+            return res.status(400).send({
+              status: 400,
+              error: 'id must be a number',
+            });
+          }
+          const values = [
+            'suspend',
+            req.params.id, 
+          ];
+          const response  = await service.findEmployee(req.params.id)
+          if(!response){
+            return res.status(404).send({
+              status: 404,
+              error: 'this employee does not exist',
+            });
+          }
+          if(response.status == 'suspend' ) {
+            return res.status(409).send({
+              status: 409,
+              error: 'this employee is suspended',
+            });
+          }
+          const updated = await service.updateEmployee(values);
+      return res.status(200).send({
+        status: 200,
+        message: 'employee has been suspended successfully',
+        data: updated
    });
         } catch(err) {
           return res.status(400).send({
