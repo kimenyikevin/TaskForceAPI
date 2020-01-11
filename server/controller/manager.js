@@ -17,8 +17,23 @@ class employee{
           req.body.position
         ];
         try {
-          const {rows}  = await db.execute(text, values);
+          const current_manager = req.user;
+          if(req.body.position == 'manager'){
+            return res.status(409).send({
+              status: 409,
+              error: 'you are not allowd to register manager',
+            });
+           }
+          const user = await db.execute(text, values);
+          if(user.routine == '_bt_check_unique'){
+            return res.status(409).send({
+                status: 409,
+                error: user.detail,
+              });
+        }
+          const { rows } = user;
           const data = rows[0];
+          const {password, ...newData} = data;
           let transport = nodemailer.createTransport({
             host: 'smtp.mailtrap.io',
             port: 2525,
@@ -28,7 +43,7 @@ class employee{
             }
         });
         const message = {
-            from: 'manager@taskforce.rw',
+            from: current_manager.email,
             to: data.email,
             subject: 'Update to your registration process',
             html: '<h1>Task Force Challenge</h1><p>you have been registed in our system!</p>'
@@ -44,7 +59,7 @@ class employee{
                 return res.status(201).send({
                     status: 201,
                     message: 'created successfully',
-                    data,
+                    newData,
                     emailInfo: envelope
                 });
             }
@@ -86,7 +101,10 @@ class employee{
           const { rows } = await db.execute(findOneQuery, [req.params.id]);
           const data = rows[0];
           if(!rows[0]) {
-            return res.status(404).send({'message': 'reflection not found'});
+            return res.status(404).send({
+              status: 404,
+              error: 'employee not found'
+            });
           }
           const values = [
             req.body.employee_name || data.employee_name,
