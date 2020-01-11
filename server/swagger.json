@@ -1,0 +1,445 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "description": "Documentation for Employees management service",
+      "version": "1.0.0",
+      "title": "Employees management",
+      "contact": {
+        "email": "kimenyikevin@gmail.com"
+      },
+      "license": {
+        "name": "Apache 2.0",
+        "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+      }
+    },
+    "host": "localhost:5000",
+    "basePath": "/api/v1",
+    "tags": [
+      {
+        "name": "signup",
+        "description": "New Manager registration"
+      },
+      {
+        "name": "login",
+        "description": "Existing Manager login"
+      },
+      {
+        "name": "Create employee",
+        "description": "Manager can create employee"
+      },
+      {
+        "name": "Delete employee",
+        "description": "Manager can delete employee"
+      },
+      {
+        "name": "update employee",
+        "description": "Manager can update employee information"
+      },
+      {
+        "name": "Active employee status",
+        "description": "Manager can active employee status"
+      },
+      {
+        "name": "Suspend employee status",
+        "description": "Manager can active employee status"
+      }
+    ],
+    "schemes": [
+      "http",
+      "https"
+    ],
+    "paths": {
+      "/signup": {
+        "post": {
+          "tags": [
+            "signup"
+          ],
+          "summary": "Create New Account",
+          "description": "If you don't have account yet register",
+          "operationId": "createUser",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Created user object",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/signup"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Manager created successfully",
+              "schema": {
+                "type": "object",
+                "example":{
+                    "status": 201,
+                    "message": "Manager created successfully",
+                    "data": {
+                        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNTY3Mjg2NTIxfQ.fJyiqLzJPs8D3NiUz_a0-NQBN1YUEfAP3sIyjhNkaqk",
+                        "id": 5,
+                        "employee_name": "kevin",
+                        "national_id": "1199684561235784",
+                        "phone_number": "+250785774843",
+                        "email": "kimenyis@gmail.com",
+                        "date_of_birth": "01-01-2003",
+                        "position": "manager"
+                    }
+                }
+              }
+            },
+            "401": {
+              "description": "manager already exist"
+            }
+          }
+        }
+      },
+      "/login": {
+        "post": {
+          "tags": [
+            "login"
+          ],
+          "summary": "manager login",
+          "description": "",
+          "operationId": "loginManager",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "login user object",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/login"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "manager successful login",
+              "schema": {
+                "type": "string",
+                "example":{
+                  "status": 200,
+                  "message": "Manager is successfully logged in",
+                  "data": {
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlclR5cGUiOiJ1c2VyIiwiZW1haWwiOiJoYWJpbWFuYWVtbXlAZ21haWwuY29tIiwiaWF0IjoxNTY3Mjg2NjczfQ.PNeEYEUwEVI0DNtzyyBDh9DfMD5t0tABtex0gVfGmtg"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid username/password supplied"
+            },
+            "404":{
+              "description": "E-mail does not exist"
+            },
+            "401": {
+              "description": " E-mail or password is wrong"
+            }
+          }
+        }
+      },
+      "/employees": {
+        "post": {
+          "tags": [
+            "Create employee"
+          ],
+          "summary": "Create employee info",
+          "description": "",
+          "operationId": "create employee",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "authorization",
+              "in": "header",
+              "required": true,
+              "type": "string",
+              "description": "The token  space"
+             },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Created employee object",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/employee"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Manager created successfully",
+              "schema": {
+                "type": "object",
+                "example":{
+                    "status": 201,
+                    "message": "Manager created successfully",
+                    "data": {
+                        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNTY3Mjg2NTIxfQ.fJyiqLzJPs8D3NiUz_a0-NQBN1YUEfAP3sIyjhNkaqk",
+                        "id": 5,
+                        "employee_name": "kevin",
+                        "national_id": "1199684561235784",
+                        "phone_number": "+250785774843",
+                        "email": "kimenyis@gmail.com",
+                        "date_of_birth": "01-01-2003",
+                        "position": "developer"
+                    }
+                }
+              }
+            },
+            "401": {
+              "description": "employee already exist"
+            }
+          }
+        }
+      },
+      "/employee/{id}": {
+          "delete": {
+            "tags": [
+              "Delete employee"
+            ],
+            "summary": "delete employee record",
+            "description": "",
+            "operationId": "getuserById",
+            "produces": [
+              "application/json"
+            ],
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "ID of the user",
+                "required": true,
+                "type": "integer",
+                "format": "int64"
+              },
+              {
+                "name": "authorization",
+                "in": "header",
+                "required": true,
+                "type": "string",
+                "description": "The token space"
+               }
+            ],
+            "responses": {
+              "200": {
+                "description": "Employee account created succcessfully",
+                "schema":{
+                  "type": "object",
+                  "example":{
+                    "status": 200,
+                    "data": {
+                        "message": "Employee account created succcessfully"
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "you are not manager"
+              },
+              "404": {
+                "description": "you do not have access to this service"
+              }
+            }
+          }
+        },
+        "/employees/{id}": {
+          "put": {
+            "tags": [
+              "update employee"
+            ],
+            "summary": "update employees",
+            "description": "",
+            "operationId": "update",
+            "produces": [
+              "application/json"
+            ],
+            "parameters": [
+                {
+                  "name": "authorization",
+                  "in": "header",
+                  "required": true,
+                  "type": "string",
+                  "description": "The token  space"
+                 },
+                {
+                  "in": "body",
+                  "name": "body",
+                  "description": "Created employee object",
+                  "required": true,
+                  "schema": {
+                    "$ref": "#/definitions/employee"
+                  }
+                }
+              ],
+              "responses": {
+                "201": {
+                  "description": "Manager created successfully",
+                  "schema": {
+                    "type": "object",
+                    "example":{
+                        "status": 201,
+                        "message": "Manager created successfully",
+                        "data": {
+                            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNTY3Mjg2NTIxfQ.fJyiqLzJPs8D3NiUz_a0-NQBN1YUEfAP3sIyjhNkaqk",
+                            "id": 5,
+                            "employee_name": "kevin",
+                            "national_id": "1199684561235784",
+                            "phone_number": "+250785774843",
+                            "email": "kimenyis@gmail.com",
+                            "date_of_birth": "01-01-2003",
+                            "position": "developer"
+                        }
+                    }
+                  }
+                },
+                "401": {
+                  "description": "employee does not exist"
+                }
+              }
+          }
+        },
+        "employees/{id}/active": {
+          "put": {
+            "tags": [
+              "Active employee status"
+            ],
+            "summary": "active employee status",
+            "description": " ",
+            "operationId": "activeEmployee",
+            "produces": [
+              "application/json"
+            ],
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "ID of the employee",
+                "required": true,
+                "type": "integer",
+                "format": "int64"
+              },
+              {
+                "name": "authorization",
+                "in": "header",
+                "required": true,
+                "type": "string",
+                "description": "The token space"
+               }
+            ],
+            "responses": {
+              "200": {
+                "description": "active employee status"
+              }
+            }
+          }
+        },
+        "employees/{id}/suspend": {
+            "put": {
+              "tags": [
+                "Suspend employee status"
+              ],
+              "summary": "suspend employee",
+              "description": " ",
+              "operationId": "suspendEmployee",
+              "produces": [
+                "application/json"
+              ],
+              "parameters": [
+                {
+                  "name": "id",
+                  "in": "path",
+                  "description": "ID of the employee",
+                  "required": true,
+                  "type": "integer",
+                  "format": "int64"
+                },
+                {
+                  "name": "authorization",
+                  "in": "header",
+                  "required": true,
+                  "type": "string",
+                  "description": "The token space"
+                 }
+              ],
+              "responses": {
+                "200": {
+                  "description": "suspend employee"
+                }
+              }
+            }
+          }
+    },
+    "definitions": {
+      "signup": {
+        "type": "object",
+        "properties": {
+          "employee_name": {
+            "type": "string"
+          },
+          "national_id": {
+            "type": "string"
+          },
+          "phone_number": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "date_of_birth": {
+            "type": "date"
+          }
+        }
+      },
+      "login": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "employee": {
+        "type": "object",
+        "properties": {
+          "employee_name": {
+            "type": "string"
+          },
+          "national_id": {
+            "type": "string"
+          },
+          "phone_number": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "date_of_birth": {
+            "type": "date"
+          },
+          "position": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "externalDocs": {
+      "description": "Employees management",
+      "url": "https://github.com/kimenyikevin/TaskForceAPI"
+    }
+  }
