@@ -23,7 +23,7 @@ class manager{
             if(user.routine == '_bt_check_unique'){
                 return res.status(409).send({
                     status: 409,
-                    error: `E-mail ${req.body.email} is alrady exist`,
+                    error: user.detail,
                   });
             }
           const token = Helper.generateToken(rows[0].id)

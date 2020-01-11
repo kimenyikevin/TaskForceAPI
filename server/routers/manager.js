@@ -8,9 +8,9 @@ const router = express.Router();
 router.post('/signup', validation.uservalidation, registration.create);
 router.post('/login', registration.login);
 router.post('/employees', auth.verifyToken, employee.create);
-router.post('/employees/:id', employee.delete);
-router.put('/employees/:id', employee.update);
-router.put('/employees/:id/active', employee.active);
-router.put('/employees/:id/suspend', employee.suspend);
+router.delete('/employee/:id', auth.verifyToken, employee.delete);
+router.put('/employees/:id',auth.verifyToken, employee.update);
+router.put('/employees/:id/active', auth.verifyToken, employee.active);
+router.put('/employees/:id/suspend', auth.verifyToken, employee.suspend);
 
 export default router;
