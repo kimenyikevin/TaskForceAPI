@@ -18,9 +18,10 @@ class User {
   employees(
     id SERIAL NOT NULL PRIMARY KEY,
     employee_name VARCHAR(128) NOT NULL,
-    national_id  BIGINT,
-    phone_number VARCHAR(128) NOT NULL,
-    email VARCHAR(128) NOT NULL,
+    national_id  VARCHAR(128) NOT NULL UNIQUE,
+    phone_number VARCHAR(128) NOT NULL UNIQUE,
+    email VARCHAR(128) NOT NULL UNIQUE,
+    password VARCHAR(128),
     date_of_birth DATE NOT NULL DEFAULT CURRENT_DATE,
     status VARCHAR(128) NOT NULL DEFAULT 'inactive',
     position VARCHAR(128) NOT NULL
