@@ -12,5 +12,6 @@ router.delete('/employee/:id', auth.verifyToken, employee.delete);
 router.put('/employees/:id',auth.verifyToken, employee.update);
 router.put('/employees/:id/active', auth.verifyToken, employee.active);
 router.put('/employees/:id/suspend', auth.verifyToken, employee.suspend);
+router.get('/verify', registration.comfirmEmail)
 
 export default router;
