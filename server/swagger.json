@@ -12,7 +12,7 @@
         "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
       }
     },
-    "host": "localhost:5000",
+    "host": "employment-employees.herokuapp.com",
     "basePath": "/api/v1",
     "tags": [
       {
