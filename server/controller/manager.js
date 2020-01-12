@@ -122,7 +122,10 @@ class employee{
             data: response.rows
           });
         } catch(err) {
-          return res.status(400).send(err);
+          return res.status(400).send({
+            status:400,
+            error: `error has accurred ${err}`
+          });
         }
       }
       active = async (req, res) => {
@@ -201,6 +204,38 @@ class employee{
         });
         }
       }
+      async search (req, res) {
+        const findOneQuery = 'SELECT * FROM employees WHERE employee_name=$1 OR phone_number=$2 OR email=$3 OR position=$4';
+        try {
+          const values = [
+            req.body.employee_name,
+            req.body.phone_number,
+            req.body.email,
+            req.body.position,
+          ];
+        const{ rows } = await db.execute(findOneQuery, values);
+          if(rows.length < 1) {
+            return res.status(404).send({
+              status: 404,
+              error: 'employee not found'
+            });
+          }
+          const newData = rows.map(employees => {
+            const {password, ...employeesInfo} = employees;
+            return employeesInfo;
+        });
+          return res.status(200).send({
+            status: 200,
+            data: newData,
+          });
+        } catch(err) {
+          return res.status(400).send({
+            status:400,
+            error: `error has accurred ${err}`
+          });
+        }
+      }
+
 }
 
 export default new employee();

@@ -2,12 +2,14 @@
 
 Here is a list of all API Endpoints that you will find:
 * POST /api/v1/signup
+* GET  /api/v1/verify **For better result please copy the link and paste it in browser or simply use postman** 
 * POST /api/v1/login
 * POST /api/v1/employees
 * DELETE /api/v1/employees/:id
-* PUT /employees/:id
-* PUT /employees/:id/active
-* PUT /employees/:id/suspend
+* PUT /api/v1/employees/:id
+* PUT /api/v1/employees/:id/active
+* PUT /api/v1/employees/:id/suspend
+* POST /api/v1/employees/search
 
 ### Technology tools used in this Project
 * Server side Framework : **Node/Express**
