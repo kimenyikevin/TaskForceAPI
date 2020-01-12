@@ -3,7 +3,7 @@ import chaiHttp from 'chai-http';
 import server from '../server';
 import models from '../db/manager';
 import helper from '../helper/helper'
-import { testingData, invaldToken, text, testData , developerData, developData, managerData } from '../helper/mock'
+import { testingData, invaldToken, text, testData, searchData, newDevData,searchDataInv, developerData, developData, managerData } from '../helper/mock'
 
 
 const { expect } = chai;
@@ -204,4 +204,221 @@ describe('Test for verifying Token', () => {
         });
     });
   });
+
+
+
+  describe('Test for manager to delete employees', () => {
+    it('should return error when employee not found', (done) => {
+       models.execute(text, testData);
+      const managerToken = helper.generateToken(1);
+      chai
+        .request(server)
+        .delete('/api/v1/employee/0')
+        .set('authorization', managerToken)
+        .end((err, res) => {
+          expect(res.body).to.be.an('object');
+          expect(res.status).to.equal(404);
+          expect(res.body.error).to.be.equal('employee not found');
+          done();
+        });
+    });
+  });
   
+
+  describe('Test for manager to update employees', () => {
+    it('should return error when employee not found', (done) => {
+       models.execute(text, testData);
+      const managerToken = helper.generateToken(1);
+      chai
+        .request(server)
+        .put('/api/v1/employees/0')
+        .set('authorization', managerToken)
+        .end((err, res) => {
+          expect(res.body).to.be.an('object');
+          expect(res.status).to.equal(404);
+          expect(res.body.error).to.be.equal('employee not found');
+          done();
+        });
+    });
+    it('should return employee has been updated', (done) => {
+        models.execute(text, testData);
+        const managerToken = helper.generateToken(1);
+      chai
+        .request(server)
+        .put('/api/v1/employees/2')
+        .set('authorization', managerToken)
+        .send(newDevData)
+        .end((err, res) => {
+          expect(res.body).to.be.an('object');
+          expect(res.status).to.equal(200);
+          expect(res.body.message).to.be.equal('employee updaed succcessfully');
+          done();
+        });
+    });
+  });
+  describe('Test for manager to activate employees', () => {
+    it('should return error when employee not found', (done) => {
+        models.execute(text, testData);
+       const managerToken = helper.generateToken(1);
+       chai
+         .request(server)
+         .put('/api/v1/employees/k/active')
+         .set('authorization', managerToken)
+         .end((err, res) => {
+           expect(res.body).to.be.an('object');
+           expect(res.status).to.equal(400);
+           expect(res.body.error).to.be.equal('id must be a number');
+           done();
+         });
+     });
+    it('should return error when employee not found', (done) => {
+       models.execute(text, testData);
+      const managerToken = helper.generateToken(1);
+      chai
+        .request(server)
+        .put('/api/v1/employees/0/active')
+        .set('authorization', managerToken)
+        .end((err, res) => {
+          expect(res.body).to.be.an('object');
+          expect(res.status).to.equal(404);
+          expect(res.body.error).to.be.equal('this employee does not exist');
+          done();
+        });
+    });
+    it('should return employee has been activeted', (done) => {
+        models.execute(text, testData);
+        const managerToken = helper.generateToken(1);
+      chai
+        .request(server)
+        .put('/api/v1/employees/2/active')
+        .set('authorization', managerToken)
+        .end((err, res) => {
+          expect(res.body).to.be.an('object');
+          expect(res.status).to.equal(200);
+          expect(res.body.message).to.be.equal('employee has been actived successfully');
+          expect(res.body.data).to.be.an('Array');
+          done();
+        });
+    });
+    it('should return error when employee not found', (done) => {
+        models.execute(text, testData);
+       const managerToken = helper.generateToken(1);
+       chai
+         .request(server)
+         .put('/api/v1/employees/2/active')
+         .set('authorization', managerToken)
+         .end((err, res) => {
+           expect(res.body).to.be.an('object');
+           expect(res.status).to.equal(409);
+           expect(res.body.error).to.be.equal('this employee is active');
+           done();
+         });
+     });
+  });
+
+  describe('Test for manager to suspend employees', () => {
+    it('should return error when employee not found', (done) => {
+        models.execute(text, testData);
+       const managerToken = helper.generateToken(1);
+       chai
+         .request(server)
+         .put('/api/v1/employees/k/suspend')
+         .set('authorization', managerToken)
+         .end((err, res) => {
+           expect(res.body).to.be.an('object');
+           expect(res.status).to.equal(400);
+           expect(res.body.error).to.be.equal('id must be a number');
+           done();
+         });
+     });
+    it('should return error when employee not found', (done) => {
+       models.execute(text, testData);
+      const managerToken = helper.generateToken(1);
+      chai
+        .request(server)
+        .put('/api/v1/employees/0/suspend')
+        .set('authorization', managerToken)
+        .end((err, res) => {
+          expect(res.body).to.be.an('object');
+          expect(res.status).to.equal(404);
+          expect(res.body.error).to.be.equal('this employee does not exist');
+          done();
+        });
+    });
+    it('should return employee has been activeted', (done) => {
+        models.execute(text, testData);
+        const managerToken = helper.generateToken(1);
+      chai
+        .request(server)
+        .put('/api/v1/employees/2/suspend')
+        .set('authorization', managerToken)
+        .end((err, res) => {
+          expect(res.body).to.be.an('object');
+          expect(res.status).to.equal(200);
+          expect(res.body.message).to.be.equal('employee has been suspended successfully');
+          expect(res.body.data).to.be.an('Array');
+          done();
+        });
+    });
+    it('should return error when employee not found', (done) => {
+        models.execute(text, testData);
+       const managerToken = helper.generateToken(1);
+       chai
+         .request(server)
+         .put('/api/v1/employees/2/suspend')
+         .set('authorization', managerToken)
+         .end((err, res) => {
+           expect(res.body).to.be.an('object');
+           expect(res.status).to.equal(409);
+           expect(res.body.error).to.be.equal('this employee is suspended');
+           done();
+         });
+     });
+  });
+
+  describe('Test for manager to search employees', () => {
+    it('should return error when employee not found', (done) => {
+       models.execute(text, testData);
+      const managerToken = helper.generateToken(1);
+      chai
+        .request(server)
+        .post('/api/v1/employees/search')
+        .set('authorization', managerToken)
+        .send(searchDataInv)
+        .end((err, res) => {
+          expect(res.body).to.be.an('object');
+          expect(res.status).to.equal(404);
+          expect(res.body.error).to.be.equal('employee not found');
+          done();
+        });
+    });
+    it('should return employee has been activeted', (done) => {
+        models.execute(text, testData);
+        const managerToken = helper.generateToken(1);
+      chai
+      .request(server)
+      .post('/api/v1/employees/search')
+      .set('authorization', managerToken)
+      .send(searchData)
+        .end((err, res) => {
+          expect(res.body).to.be.an('object');
+          expect(res.status).to.equal(200);
+          expect(res.body.data).to.be.an('Array');
+          done();
+        });
+    });
+    it('should employees has been updated', (done) => {
+        models.execute(text, testData);
+        const managerToken = helper.generateToken(1);
+      chai
+        .request(server)
+        .delete('/api/v1/employee/2')
+        .set('authorization', managerToken)
+        .end((err, res) => {
+          expect(res.body).to.be.an('object');
+          expect(res.status).to.equal(200);
+          expect(res.body.message).to.be.equal('employee has been deleted');
+          done();
+        });
+    });
+  });
