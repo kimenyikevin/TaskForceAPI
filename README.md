@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/kimenyikevin/TaskForceAPI.svg?branch=develop)](https://travis-ci.org/kimenyikevin/TaskForceAPI)
-[![Coverage Status](https://coveralls.io/repos/github/kimenyikevin/TaskForceAPI/badge.svg?branch=develop)](https://coveralls.io/github/kimenyikevin/TaskForceAPI?branch=develop)
+[![Coverage Status](https://coveralls.io/repos/github/kimenyikevin/TaskForceAPI/badge.svg?branch=ch-test-for-api)](https://coveralls.io/github/kimenyikevin/TaskForceAPI?branch=ch-test-for-api)
 # Employee management REST API
 
 Here is a list of all API Endpoints that you will find:
