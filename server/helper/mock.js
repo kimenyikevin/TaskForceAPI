@@ -80,3 +80,24 @@ export const developerData = [
     date_of_birth: '1-1-2002',
     position: 'manager'
   }
+
+  export const newDevData ={
+    employee_name: 'habimana',
+    national_id: '1199999911999222',
+    phone_number: '+250784837100',
+    email: 'habimanaemmy05@gmail.com',
+    date_of_birth: '1-1-2002',
+    position: 'manager'
+  }
+  export const searchDataInv = {
+    employee_name: '',
+    phone_number: '+250784830',
+    email: '@gmail.com',
+    position: 'manag'
+  }
+  export const searchData ={
+    employee_name: 'habimana',
+    phone_number: '+250784837100',
+    email: 'habimanaemmy05@gmail.com',
+    position: 'manager'
+  }
