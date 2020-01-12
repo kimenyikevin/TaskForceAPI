@@ -42,6 +42,10 @@
       {
         "name": "Suspend employee status",
         "description": "Manager can active employee status"
+      },
+      {
+        "name": "search employee",
+        "description": "Manager can search any employee"
       }
     ],
     "schemes": [
@@ -94,6 +98,31 @@
             },
             "401": {
               "description": "manager already exist"
+            }
+          }
+        }
+      },
+      "/verify":{
+        "get":{
+          "tags":[
+            "signup"
+          ],
+          "summary": "email comfirmation",
+          "description": "For better result please copy the link and paste it in browser or simply use postman",
+          "operationId": "emailcomfirmed",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "email comfirmed ",
+              "schema": {
+                "type": "string",
+                "example":{
+                  "status": 200,
+                  "message": "Email comfirmed "
+                }
+              }
             }
           }
         }
@@ -377,6 +406,48 @@
                 }
               }
             }
+          },
+          "/employees/search": {
+            "post": {
+              "tags": [
+                "search employee"
+              ],
+              "summary": "search employee info",
+              "description": "",
+              "operationId": "searchemployee",
+              "produces": [
+                "application/json"
+              ],
+              "parameters": [
+                {
+                  "name": "authorization",
+                  "in": "header",
+                  "required": true,
+                  "type": "string",
+                  "description": "The token  space"
+                 },
+                {
+                  "in": "body",
+                  "name": "body",
+                  "description": "search employee object",
+                  "required": true,
+                  "schema": {
+                    "$ref": "#/definitions/search"
+                  }
+                }
+              ],
+              "responses": {
+                "201": {
+                  "description": "employees information",
+                  "schema": {
+                    "type": "object"
+                  }
+                },
+                "401": {
+                  "description": "employee not found"
+                }
+              }
+            }
           }
     },
     "definitions": {
@@ -431,6 +502,23 @@
           },
           "date_of_birth": {
             "type": "date"
+          },
+          "position": {
+            "type": "string"
+          }
+        }
+      },
+      "search": {
+        "type": "object",
+        "properties": {
+          "employee_name": {
+            "type": "string"
+          },
+          "phone_number": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
           },
           "position": {
             "type": "string"
