@@ -1,5 +1,6 @@
 import db from '../db/manager';
 import Helper from '../helper/helper';
+import nodemailer from 'nodemailer';
 
 class manager{
     async create(req, res) {
@@ -26,13 +27,44 @@ class manager{
                     error: user.detail,
                   });
             }
-          const token = Helper.generateToken(rows[0].id)
-          return res.status(201).send({
-              status: 201,
-              token,  
+            let transport = nodemailer.createTransport({
+              host: 'smtp.mailtrap.io',
+              port: 2525,
+              auth: {
+                 user: 'b0d2959ec50ca7',
+                 pass: 'a769891334d4d1'
+              }
           });
+          const rand = 123;
+          const link ="http://"+req.get('host')+"/api/v1/verify?id="+rand;
+          const message = {
+            from: 'admin@awesomity.rw',
+            to: req.body.email,
+            subject: 'Please confirm your Email account',
+            html: "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>"
+        };
+        transport.sendMail(message, function(err, info) {
+            if(err){
+                return res.status(400).send({
+                    status: 400,
+                    error: `error has occurred ${err}`
+                });
+            }else{
+                const { envelope } = info;
+                const token = Helper.generateToken(rows[0].id)
+                return res.status(201).send({
+                    status: 201,
+                    token,  
+                    link,
+                    emailInfo: envelope
+                });
+            }
+        });
         } catch(error) {
-          return res.status(400).send(error);
+          return res.status(400).send({
+            status: 400,
+            error: `error has accored ${error}`
+          });
         }
       }
     async login(req, res){
@@ -64,6 +96,18 @@ class manager{
           });
         }
     }
+    async comfirmEmail(req, res ) {
+          if(req.query.id == 123){
+            return res.status(200).send({
+              status: 200,
+              message:'Email has been Successfully verified',
+            });
+          }
+          return res.status(400).send({
+            status: 400,
+            error: 'email is not verified'
+          })
+      }
 }
 
 export default new manager();

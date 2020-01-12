@@ -31,7 +31,6 @@ class employee{
                 error: user.detail,
               });
         }
-           console.log(user)
           const { rows } = user;
           const data = rows[0];
           const {password, ...newData} = data;
