@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/629bc664da714e73a0de87df6ad6c1b3)](https://app.codacy.com/manual/kimenyikevin/TaskForceAPI?utm_source=github.com&utm_medium=referral&utm_content=kimenyikevin/TaskForceAPI&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://travis-ci.org/kimenyikevin/TaskForceAPI.svg?branch=develop)](https://travis-ci.org/kimenyikevin/TaskForceAPI)
 [![Coverage Status](https://coveralls.io/repos/github/kimenyikevin/TaskForceAPI/badge.svg?branch=ch-test-for-api)](https://coveralls.io/github/kimenyikevin/TaskForceAPI?branch=ch-test-for-api)
 [![Maintainability](https://api.codeclimate.com/v1/badges/44af1debbabed5f666bf/maintainability)](https://codeclimate.com/github/kimenyikevin/TaskForceAPI/maintainability)
